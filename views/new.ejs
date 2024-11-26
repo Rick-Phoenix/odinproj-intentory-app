@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add a new game</title>
+  </head>
+  <body>
+    <h1>Add a new game</h1>
+    <% if (message) { %>
+    <h3><%=message%></h3>
+    <% } %>
+    <form action="/new" method="POST">
+      <label for="name">Title: </label>
+      <input type="text" name="name" id="name" />
+      <label for="genre">Genre: </label>
+      <input type="text" name="genre" id="genre" />
+      <label for="release_yr">Release Year: </label>
+      <input
+        type="number"
+        min="1950"
+        max="2024"
+        name="release_yr"
+        id="release_yr"
+      />
+      <fieldset>
+        <legend>Platforms:</legend>
+        <input type="checkbox" name="platforms" value="Ps5" />
+        <label for="Ps5">PlayStation 5</label>
+        <input type="checkbox" name="platforms" value="Pc" />
+        <label for="Pc">Pc</label>
+        <input type="checkbox" name="platforms" value="Nintendo Switch" />
+        <label for="Nintendo-Switch">Nintendo Switch</label>
+      </fieldset>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Store Items</title>
+  </head>
+  <body>
+    <h1>Manage Store Items</h1>
+    <% for (game of games) { %>
+    <h3><%=game.name%></h3>
+    <li>Released in <%= game.release_yr %></li>
+    <li>Genre: <%= game.genre %></li>
+    <li>Available for: <%= game.platforms.join(', ') %></li>
+    <% } %>
+    <a href="/new">Add a new game</a>
+  </body>
+</html>
