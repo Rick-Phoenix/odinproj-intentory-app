@@ -12,9 +12,9 @@
     <% } %>
     <form action="/new" method="POST">
       <label for="name">Title: </label>
-      <input type="text" name="name" id="name" />
+      <input type="text" name="name" id="name" required />
       <label for="genre">Genre: </label>
-      <input type="text" name="genre" id="genre" />
+      <input type="text" name="genre" id="genre" required />
       <label for="release_yr">Release Year: </label>
       <input
         type="number"
@@ -22,6 +22,7 @@
         max="2024"
         name="release_yr"
         id="release_yr"
+        required
       />
       <fieldset>
         <legend>Platforms:</legend>

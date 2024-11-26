@@ -12,6 +12,14 @@
     <li>Released in <%= game.release_yr %></li>
     <li>Genre: <%= game.genre %></li>
     <li>Available for: <%= game.platforms.join(', ') %></li>
+    <form action="/edit" method="POST">
+      <input type="hidden" name="gameid" value="<%= game.id %>" />
+      <button type="submit">Edit</button>
+    </form>
+    <form action="/delete" method="POST">
+      <input type="hidden" name="gameid" value="<%= game.id %>" />
+      <button type="submit">Delete</button>
+    </form>
     <% } %>
     <a href="/new">Add a new game</a>
   </body>

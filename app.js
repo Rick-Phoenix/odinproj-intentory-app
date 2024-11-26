@@ -7,6 +7,9 @@ const {
   inputValidation,
   getAllGames,
   adminAuth,
+  editGame,
+  inputValidationEdit,
+  deleteGame,
 } = require("./controllers/controllers");
 const app = express();
 
@@ -21,5 +24,8 @@ app.get("/auth", (req, res) => res.render("auth"));
 app.post("/auth", adminAuth);
 app.use("/genre", genreRouter);
 app.use("/platform", platformRouter);
+app.post("/edit", editGame);
+app.post("/edit/send", inputValidationEdit);
+app.post("/delete", deleteGame);
 
 app.listen(3000);

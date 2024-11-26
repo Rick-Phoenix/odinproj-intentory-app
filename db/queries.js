@@ -5,11 +5,25 @@ async function queryAllGames() {
   return rows;
 }
 
+async function queryGame(id) {
+  const query = await pool.query("SELECT * FROM games WHERE id = ($1) ;", [id]);
+  const game = query.rows[0];
+  return game;
+}
+
 async function queryByGenre(genre) {
-  const { rows } = await pool.query("SELECT * FROM games WHERE genre = ($1)", [
-    genre,
-  ]);
+  const { rows } = await pool.query(
+    "SELECT * FROM games WHERE genre = ($1) ;",
+    [genre]
+  );
   return rows;
+}
+
+async function updateEntry(game) {
+  await pool.query(
+    "UPDATE games SET name = ($1), genre = ($2), platforms = ($3), release_yr = ($4) WHERE id = ($5) ;",
+    [game.name, game.genre, game.platforms, +game.release_yr, +game.id]
+  );
 }
 
 async function queryByPlatform(platform) {
@@ -28,9 +42,16 @@ async function addGameToDB(game) {
   );
 }
 
+async function deleteGameFromDB(id) {
+  await pool.query("DELETE FROM games WHERE id = ($1) ;", [id]);
+}
+
 module.exports = {
   queryByGenre,
   queryByPlatform,
   addGameToDB,
   queryAllGames,
+  queryGame,
+  updateEntry,
+  deleteGameFromDB,
 };

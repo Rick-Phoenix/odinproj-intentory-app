@@ -3,6 +3,9 @@ const {
   queryByPlatform,
   addGameToDB,
   queryAllGames,
+  queryGame,
+  updateEntry,
+  deleteGameFromDB,
 } = require("../db/queries");
 const { body, validationResult } = require("express-validator");
 
@@ -22,7 +25,17 @@ const adminAuth = [
   },
 ];
 
-async function getAllGames(req, res) {}
+async function editGame(req, res) {
+  const gameid = +req.body.gameid;
+  const game = await queryGame(gameid);
+  res.render("edit", { game: game, message: null });
+}
+
+async function deleteGame(req, res) {
+  const gameid = +req.body.gameid;
+  await deleteGameFromDB(gameid);
+  res.send("Game deleted successfully.");
+}
 
 async function getGamesByGenre(req, res) {
   const genre = req.params.genre;
@@ -37,17 +50,45 @@ async function getGamesByPlatform(req, res) {
 }
 
 const inputValidation = [
-  body("platforms")
-    .isArray({ min: 1 })
-    .withMessage("You must select at least one platform."),
+  body("platforms").custom((value) => {
+    if (!value) throw new Error("You must select at least one platform.");
+    else return true;
+  }),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).render("new", { message: errors.array()[0].msg });
     } else {
-      addGameToDB(req.body);
+      const game = { ...req.body };
+      if (!Array.isArray(game.platforms)) {
+        game.platforms = [game.platforms];
+      }
+      addGameToDB(game);
       res.render("new", {
-        message: `Game ${req.body.name} added successfully.`,
+        message: `Game ${game.name} added successfully.`,
+      });
+    }
+  },
+];
+
+const inputValidationEdit = [
+  body("platforms").custom((value) => {
+    if (!value) throw new Error("You must select at least one platform.");
+    else return true;
+  }),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("edit", { message: errors.array()[0].msg });
+    } else {
+      const game = { ...req.body };
+      if (!Array.isArray(game.platforms)) {
+        game.platforms = [game.platforms];
+      }
+      updateEntry(game);
+      res.render("edit", {
+        game: game,
+        message: `Game ${game.name} edited successfully.`,
       });
     }
   },
@@ -58,4 +99,7 @@ module.exports = {
   getGamesByPlatform,
   inputValidation,
   adminAuth,
+  editGame,
+  inputValidationEdit,
+  deleteGame,
 };
